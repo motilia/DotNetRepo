@@ -1,0 +1,34 @@
+# .NET build output
+bin/
+obj/
+
+# SQLite database files
+*.db
+*.db-shm
+*.db-wal
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+
+# Logs
+*.log
+
+# Rider / JetBrains
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Temporary files
+*.swp
+*.tmp
+~*
+
+# HTTP test files
+*.http
+
+# Auto-generated migrations metadata
+Migrations/
+
