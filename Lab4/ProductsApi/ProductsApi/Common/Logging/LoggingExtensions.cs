@@ -1,0 +1,1 @@
+﻿namespace ProductsApi.Common.Logging;
