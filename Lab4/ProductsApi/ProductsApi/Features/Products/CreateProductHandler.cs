@@ -17,7 +17,11 @@ public class CreateProductHandler
     private readonly IValidator<CreateProductProfileRequest> _validator;
     private readonly ILogger<CreateProductHandler> _logger;
 
-    private const string CacheKeyAllProducts = "all_products";
+    private const string CacheKeyAllProducts = "products_all";
+
+    private static string GetCategoryCacheKey(ProductCategory category)
+       => $"products_{category}";
+
 
     public CreateProductHandler(
         IMapper mapper,
@@ -121,11 +125,17 @@ public class CreateProductHandler
                 "Database operation completed for ProductId {ProductId}, SKU {SKU}",
                 entity.Id, entity.SKU);
 
+            var categoryCacheKey = GetCategoryCacheKey(entity.Category);
+
             _cache.Remove(CacheKeyAllProducts);
+            _cache.Remove(categoryCacheKey);
 
             _logger.LogInformation(
                 new EventId(ProductLogEvents.CacheOperationPerformed, nameof(ProductLogEvents.CacheOperationPerformed)),
-                "Cache operation performed for key {CacheKey}", CacheKeyAllProducts);
+                "Cache invalidated for keys {AllKey} and {CategoryKey}",
+                CacheKeyAllProducts,
+                categoryCacheKey);
+
 
             var dto = _mapper.Map<ProductProfileDto>(entity);
 
